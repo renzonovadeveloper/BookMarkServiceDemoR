@@ -8,6 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,6 +25,29 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
+}
+
+
+
+/**
+ * Handles REST-API calls for {@link demo.Booking booking data}.
+ */
+@RestController
+@RequestMapping("/bookings")
+class BookingRestController {
+
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @RequestMapping(method = RequestMethod.POST)
+    Booking add(@RequestBody Booking b) {
+        return this.bookingRepository.save(b);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    Collection<Booking> all() {
+        return this.bookingRepository.findAll();
+    }
 }
 
 @Component
